@@ -33,7 +33,7 @@ public class WebViewActivity extends Activity {
         webView.setInitialScale(1);
         //webView.loadUrl("http://192.168.2.1:8000/js_keycode.html");
         //webView.loadUrl("http://192.168.2.1:8000/html5.html");
-        webView.loadUrl("http://192.168.2.1:1337/?brand=default&model=webkit&tenant=singtel");
+        webView.loadUrl("http://dev.ecreationmedia.tv:1337/?brand=default&model=webkit&tenant=singtel");
 
     }
 
