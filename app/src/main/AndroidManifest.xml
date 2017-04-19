@@ -1,0 +1,37 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="tv.ecreationmedia.mtvaapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-feature android:name="android.software.leanback"
+        android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen"
+        android:required="false"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ec_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Leanback"
+        android:banner="@drawable/ecreation"
+        android:hardwareAccelerated="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:exported="true" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name=".WebViewActivity"
+            android:theme="@android:style/Theme.NoTitleBar">
+
+        </activity>
+    </application>
+
+</manifest>
