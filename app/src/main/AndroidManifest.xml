@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Leanback"
         android:banner="@drawable/ecreation"
-        android:hardwareAccelerated="true">
+        android:hardwareAccelerated="true"
+        android:name="tv.ecreationmedia.mtvaapp.App">
 
         <activity
             android:name=".MainActivity"
