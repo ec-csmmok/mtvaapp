@@ -14,7 +14,9 @@ import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.InputType;
 import android.util.*;
+import android.widget.EditText;
 
 /**
  * Created by cmok on 16/4/2017.
@@ -23,18 +25,19 @@ import android.util.*;
 public class WebViewActivity extends Activity {
     public static final String tenantFile = "launch_urls";
     public static final String current = "current";
-    public static final String tenantList ="http://px2.ecreationmedia.tv/content/launch_urls";
+    public static final String tenantList ="http://www.ecreationmedia.tv/arris/launch_urls";
     //public static final String tenantList ="http://192.168.2.1:8080/launch_urls";
-    private String[] defaultTenants = {"Arris#http://px2.ecreationmedia.tv/?brand=default&model=webkit&tenant=arris",
-            "TalkTalk#http://px2.ecreationmedia.tv/?brand=default&model=webkit&tenant=talktalk"};
 
     private WebView webView;
     private final int[] code = {KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_BACK,
             KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_BACK};
+    private String[] defaultTenants = {"Arris#http://px2.ecreationmedia.tv/?brand=default&model=webkit&tenant=arris",
+            "TalkTalk#http://px2.ecreationmedia.tv/?brand=default&model=webkit&tenant=talktalk"};
     private List<Integer> history = new ArrayList<>();
     private List<String> tenantNames = new ArrayList<>();
     private List<String> urls = new ArrayList<>();
     private String launchUrl = "";
+    private String custom_url = "";
     //private List<Pair<String, String>> tenant = new ArrayList<>();
 
     public void onCreate(Bundle savedInstanceState) {
@@ -127,9 +130,12 @@ public class WebViewActivity extends Activity {
             }
         }
 
-        for(int i = 0; i < tenantNames.size(); i++){
+        tenantNames.add("Custom Url");
+        urls.add(custom_url);
+
+        /*for(int i = 0; i < tenantNames.size(); i++){
             Log.d("MTVA", tenantNames.get(i) + " " + urls.get(i));
-        }
+        }*/
     }
 
     private void detectKeyCombo(int keyCode) {
@@ -160,11 +166,44 @@ public class WebViewActivity extends Activity {
         builder.setItems(tenants, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                updateCurrent(urls.toArray()[which].toString());
+                if(which == tenantNames.size() - 1) {
+                    enterCustomUrl();
+                } else {
+                    updateCurrent(urls.toArray()[which].toString());
+                    finishAndRemoveTask();
+                    System.exit(0);
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void enterCustomUrl() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Type in custom url:");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
+        input.setText(launchUrl);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                custom_url = input.getText().toString();
+                Log.d("MTVA", "Url entered is: " + custom_url);
+                updateCurrent(custom_url);
                 finishAndRemoveTask();
                 System.exit(0);
             }
         });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
         builder.show();
     }
 }
